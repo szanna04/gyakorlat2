@@ -1,0 +1,3 @@
+EXECUTE AS User= 'Mask';
+SELECT * FROM Ugyfel
+REVERT
