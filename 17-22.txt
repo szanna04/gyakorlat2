@@ -1,0 +1,42 @@
+match(m:Movie)
+where m.released = 1986
+return m.title, m.released
+
+17. feladat
+match(p:Person) 
+where p.born = 1964 or p.born = 1965 
+return p.name, p.born
+
+
+18. feladat
+match(m:Movie)
+where m.title starts with "A"
+return m.title, m.released
+order by m.released DESC
+
+19. feladat
+//kapcsolatos
+match (p:Person)-[:PRODUCED]->(m:Movie) //nem mindegy, hogy a nyíl merre mutat
+where p.name = 'Joel Silver'
+return m.title
+
+20. feladat
+match (p:Person)-[:DIRECTED]->(m:Movie)
+with p.name as nev, count(*) as db //having emulálása
+where db>1
+return nev, db
+
+21. feladat
+match (p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(p:Person)
+return p.name
+
+22. feladat
+match (p:Person)-[:ACTED_IN]->(m:Movie)
+return m.title, count(*)
+order by count(*) desc, m.title
+//nincs hozzá feltétel ezért jó
+//szép megoldás:
+//match (p:Person)-[:ACTED_IN]->(m:Movie)
+//with m.title as cim, count(*) as db
+//return cim, db
+//order by db desc, cim asc
