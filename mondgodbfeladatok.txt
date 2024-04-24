@@ -1,0 +1,2 @@
+db.movies.aggregate([{$group:{_id '$rated', atlag: {$avg: '$runtime'}}},{$match:{atlag:{$gt:25}}}])
+db.movies.find({ runtime: { $lt: 100 }, num_mflix_comments: { $gt: 5 } } )
