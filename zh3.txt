@@ -1,0 +1,71 @@
+1. feladat
+A MongoDB Atlas-ban (vagy a Compass-ban) navigáljon a sample_mflix adatbázishoz, és kérdezze le a movies gyűjteményt az alábbiak szerint:
+
+A nyelvek közül a legelső English legyen ÉS
+A film 2 alkalommal lett díjazva (awards.wins)
+Csak a filmek címe, írói, rendezői és az év mezők jelenjenek meg
+Rendezzük sorba a filmeket év szerint csökkenően
+Beadandó: a Filter, Project és a Sort részbe írt kódok
+
+Filter: {"Languages.0": "English", "awards.wins": 2}
+Project: {title:1, writers:1, directors:1, year:1, _id:0}
+Sort: {year:-1}
+
+2. feladat
+A MongoDB shell-ben csatlakozzon a sample_mflix adatbázishoz, és kérdezze le a users gyűjteményt az alábbiak szerint:
+
+Csak a felhasználók neve és email címe jelenjen meg
+Az email cím tartalmazza a .com karaktersorozatot.
+Beadandó: a megfelelő utasítás
+
+db.users.find({"email": {$regex: /.com}},{"name":1, "email":1, "_id":0})
+
+3. feladat
+A MongoDB shell-ben csatlakozzon a sample_mflix adatbázishoz, és kérdezze le a movies gyűjteményt az alábbiak szerint:
+
+A lekérdezés feleljen meg a következő SQL lekérdezésnek:
+
+SELECT rated, AVG(runtime)
+FROM movies
+WHERE year > 1950
+GROUP BY rated
+
+
+Beadandó a lekérdező utasítás
+
+db.movies.aggregate([
+{$group: {_id: "$rated", atlag: {$avg: "$runtime"}}},
+{$match: {"year": {$gt: 1950}}}
+])
+
+
+4. feladat
+Csatlakozzon a Movies adatbázishoz a Neo4J Sandbox-ban (vagy a Desktop-ban), és kérdezze le a következőket:
+
+Listázzuk a filmek címét és szereplőit
+Csak a szereplő neve és a film cím jelenjen meg
+Szűrjünk az 1970 utáni évekre VAGY azokra a filmekre, amelyek címében a "Love" szó szerepel
+Nevezzük el a megjelenített mezőket
+Rendezzük sorba az eredményt cím szerint csökkenően!
+Beadandó: a megfelelő utasítás
+
+match (p:Person)-[:ACTED_IN]->(m:Movie)
+where m.released > 1970 or m.title contains "love"
+return m.title, p.name
+order by m.title desc
+
+5. feladat
+A neo4j Sandbox-ban (vagy a Desktop-ban) csatlakozzon a Movies adatbázishoz, és kérdezze le a következő SQL-lekérdezésnek megfelelő adatokat:
+
+SELECT TOP 5  p.name AS Director, COUNT(*) AS NumMoviesDirected
+
+FROM movies m JOIN person p ON m.directorId = p.personId
+
+GROUP BY p.name
+
+ORDER BY NumMoviesDirected DESC
+
+match (p:Person)-[:DIRECTED]->(m:Movie)
+return p.name as Director, count(*) as NumMoviesDirected
+order by NumMoviesDirected desc
+limit 5
