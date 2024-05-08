@@ -1,0 +1,44 @@
+clear
+> set nev "Kiss Bela"
+"OK"
+
+> get nev
+"Kiss Bela"
+
+> hset dolgozo:01 nev juci neptun abcdef szak gazdinfo
+(integer) 3
+
+> hgetall dolgozo:01
+1) "nev"
+2) "juci"
+3) "neptun"
+4) "abcdef"
+5) "szak"
+6) "gazdinfo"
+
+> zadd nevek 1 Juci 2 Jeno 3 Ilona
+(integer) 3
+
+> zrange nevek 0 -1
+1) "Juci"
+2) "Jeno"
+3) "Ilona"
+
+> zrange nevek 0 -1 withscores
+1) "Juci"
+2) "1"
+3) "Jeno"
+4) "2"
+5) "Ilona"
+6) "3"
+
+> sadd nevsor laci juci bela
+(integer) 3
+
+> rpush italok fanta sprite h2o
+(integer) 3
+
+> lrange italok 0 -1
+1) "fanta"
+2) "sprite"
+3) "h2o"
