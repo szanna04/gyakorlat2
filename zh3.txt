@@ -34,8 +34,8 @@ GROUP BY rated
 Beadandó a lekérdező utasítás
 
 db.movies.aggregate([
-{$group: {_id: "$rated", atlag: {$avg: "$runtime"}}},
-{$match: {"year": {$gt: 1950}}}
+{$match: {"year": {$gt: 1950}}},
+{$group: {_id: "$rated", atlag: {$avg: "$runtime"}}}
 ])
 
 
