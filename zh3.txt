@@ -18,7 +18,7 @@ Csak a felhasználók neve és email címe jelenjen meg
 Az email cím tartalmazza a .com karaktersorozatot.
 Beadandó: a megfelelő utasítás
 
-db.users.find({"email": {$regex: /.com}},{"name":1, "email":1, "_id":0})
+db.users.find({"email": {$regex: /.com/}},{"name":1, "email":1, "_id":0})
 
 3. feladat
 A MongoDB shell-ben csatlakozzon a sample_mflix adatbázishoz, és kérdezze le a movies gyűjteményt az alábbiak szerint:
