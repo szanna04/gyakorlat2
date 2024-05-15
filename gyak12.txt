@@ -1,0 +1,100 @@
+12. feladat
+
+> HSEt dolgozo:1 nev "Nagy Eva" munkakor titkarno
+(integer) 2
+
+> HSET dolgozo:2 nev "Kiss Ilona" munkakor konyvelo
+(integer) 2
+
+
+13. feladat 
+
+
+HA SORONKÉNT KELL FELVINNI ADATOKAT, AKKOR ÜGYELNI KELL AZ ELNEVEZÉSRE A KAPCSOLATOK MIATT
+
+> HSET projekt:1:1 projektnev "EURO-33"
+(integer) 1
+
+> HSET projekt:3:2 projektnev "TRANS-22"
+(integer) 1
+
+
+OSZLOPONKÉNT
+
+> ZADD dologzo:nev 1 "Nagy Eva" 2 "Kiss Ilona"
+(integer) 2
+
+> ZADD dolgozo:munkakor 1 titkarno 2 konyvelo
+(integer) 2
+
+MEZŐNKÉNT (legegyzserűbb, de legfapadosabb)
+
+> SET dolgozo:1:nev "Nagy Eva"
+"OK"
+
+> SET dolgozo:1:munkakor titkarno
+"OK"
+
+
+
+CASSANDRA
+
+desc keyspaces;
+use gyak12;
+desc tables;
+desc table movies_and_tv;
+clear;
+
+20. feladat
+
+SELECT title
+          ... FROM movies_and_tv
+          ... WHERE type = 'Movie' AND release_year = 2018; !!!CSAK KULCSMEZŐK LEHETNEK WHEREBEN: RÁJUK LEHET SZŰRNI!!!
+	  ... LIMIT 3;
+
+21. feladat
+
+SELECT type, release_year,  COUNT(*) FROM movies_and_tv GROUP BY type, release_year LIMIT 5;
+
+23. feladat
+
+DROP TABLE SZEMELY // ELŐZŐLEG ELKÉSZÍTETT TÁBLA ELDOBÁSA
+
+ CREATE TABLE SZEMELY
+          ... (
+          ... nev TEXT,
+          ... szulev int,
+          ... foglalkozas TEXT,
+          ... PRIMARY KEY ((nev, szulev), foglalkozas));
+
+INSERT INTO SZEMELY (nev, szulev, foglalkozas)
+          ... VALUES ('Kiss Bela', 2000, 'lakatos');
+INSERT INTO SZEMELY (nev, szulev, foglalkozas) VALUES ('Nagy Ivo', 1999, 'diak');
+select * from szemely;
+
+27. feladat
+
+ ALTER TABLE SZEMELY
+          ... ADD vegzettseg LIST<TEXT>;
+
+UPDATE SZEMELY 
+          ... SET vegzettseg = ['gepesz', 'muszeresz']
+          ... WHERE nev = 'Kiss Bela' AND szulev = 2000 AND foglalkozas = 'lakatos';
+
+select * from szemely;
+
+halmaz: set a lsit szó helyett és {ilyenbe kellenek az értékek}
+ALTER TABLE SZEMELY
+          ... ADD nyelvtudas SET<TEXT>;
+UPDATE SZEMELY
+          ... SET nyelvtudas = {'angol', 'nemet'}
+          ... WHERE nev = 'Nagy Ivo' AND szulev = 1999 AND foglalkozas = 'diak';
+select * from szemely;
+
+
+ ALTER TABLE SZEMELY
+          ... ADD autok MAP<TEXT, TEXT>;
+UPDATE SZEMELY
+          ... SET autok['abc-123'] = 'Audi A4'
+          ... WHERE nev = 'Kiss Bela' AND szulev = 2000 AND foglalkozas = 'lakatos';
+select * from szemely;
